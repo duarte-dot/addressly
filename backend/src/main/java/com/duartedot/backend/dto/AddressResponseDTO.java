@@ -10,4 +10,5 @@ public record AddressResponseDTO(
     String logradouro,
     String bairro,
     @JsonProperty("cidade") @JsonAlias("localidade") String cidade,
-    String estado) {}
+    String estado,
+    String uf) {}

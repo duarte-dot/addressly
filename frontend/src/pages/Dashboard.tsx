@@ -1,11 +1,21 @@
+import { useState } from "react";
 import { User } from "@/services/api";
-import { useFetchUsers } from "@/hooks/useFetchUsers";
-import { Pencil, Trash } from "lucide-react";
-import { Card, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card, CardHeader } from "@/components/ui/card";
+import { useFetchUsers } from "@/hooks/useFetchUsers";
+import { AddressFormModal } from "@/components/AddressFormModal";
+import toast from "react-hot-toast";
+import { Pencil, Trash } from "lucide-react";
 
 export const DashBoard = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { data: users, isLoading, isError } = useFetchUsers();
+
+  const handleUserAdded = () => {
+    toast.success("Usuário cadastrado!");
+    setIsModalOpen(false);
+  };
 
   if (isLoading) {
     return <p className="text-center mt-10 text-gray-400">Carregando...</p>;
@@ -20,8 +30,8 @@ export const DashBoard = () => {
   }
 
   return (
-    <div className="flex flex-col p-6 space-y-8 md:mx-32 text-start">
-      <div className="space-y-2 ">
+    <div className="flex flex-col p-6 space-y-8 md:mx-32">
+      <div className="space-y-2">
         <h1 className="text-4xl font-bold text-white">
           Bem-vindo(a) ao <span className="text-[#228be6]">Addressly!</span>
         </h1>
@@ -31,8 +41,8 @@ export const DashBoard = () => {
       </div>
 
       <Button
-        className="w-full !mt-10 md:w-auto mx-auto bg-[#1971c2] text-white hover:bg-[#228be6] rounded px-6 py-8 text-lg transition-all"
-        onClick={() => {}}
+        className="w-full md:w-auto mx-auto bg-[#1971c2] text-white hover:bg-[#228be6] rounded px-6 py-8 text-lg transition-all"
+        onClick={() => setIsModalOpen(true)}
       >
         Cadastrar Novo Endereço
       </Button>
@@ -62,6 +72,13 @@ export const DashBoard = () => {
           ))}
         </div>
       </div>
+
+      {isModalOpen && (
+        <AddressFormModal
+          setIsModalOpen={setIsModalOpen}
+          handleUserAdded={handleUserAdded}
+        />
+      )}
     </div>
   );
 };
