@@ -81,6 +81,13 @@ export const AddressFormModal: React.FC<AddressFormModalProps> = ({
     }
   }, [error]);
 
+  const getPlaceholder = (fieldName: string) => {
+    if (fieldName === "cpf" || fieldName === "cep") {
+      return fieldName.toUpperCase();
+    }
+    return fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
+  };
+
   return (
     <div className="!mt-0 fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
       <div className="bg-gray-900 p-6 rounded  max-w-lg shadow-lg">
@@ -110,12 +117,7 @@ export const AddressFormModal: React.FC<AddressFormModalProps> = ({
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder={
-                          field.name === "cpf" || field.name === "cep"
-                            ? field.name.toUpperCase()
-                            : field.name.charAt(0).toUpperCase() +
-                              field.name.slice(1)
-                        }
+                        placeholder={getPlaceholder(field.name)}
                         className="bg-gray-800 text-white placeholder-gray-500 border border-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none rounded- px-4 py-2"
                       />
                     </FormControl>

@@ -4,17 +4,27 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { useFetchUsers } from "@/hooks/useFetchUsers";
 import { AddressFormModal } from "@/components/AddressFormModal";
+import { UserDetails } from "@/components/UserDetails";
 import toast from "react-hot-toast";
 import { Pencil, Trash } from "lucide-react";
 
 export const DashBoard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const { data: users, isLoading, isError } = useFetchUsers();
 
   const handleUserAdded = () => {
     toast.success("Usuário cadastrado!");
     setIsModalOpen(false);
+  };
+
+  const handleCardClick = (user: User) => {
+    setSelectedUser(user);
+  };
+
+  const closeUserModal = () => {
+    setSelectedUser(null);
   };
 
   if (isLoading) {
@@ -57,7 +67,7 @@ export const DashBoard = () => {
             <Card
               key={user.id}
               className="shadow-lg hover:shadow-xl transition-all cursor-pointer bg-gray-800 text-white border border-gray-700 rounded hover:border-gray-600 hover:bg-gray-700"
-              onClick={() => {}}
+              onClick={() => handleCardClick(user)}
             >
               <CardHeader className="flex justify-between items-center flex-row">
                 <p className="text-gray-400">
@@ -78,6 +88,10 @@ export const DashBoard = () => {
           setIsModalOpen={setIsModalOpen}
           handleUserAdded={handleUserAdded}
         />
+      )}
+
+      {selectedUser && (
+        <UserDetails user={selectedUser} onClose={closeUserModal} />
       )}
     </div>
   );
