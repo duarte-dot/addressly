@@ -13,6 +13,7 @@ services:
       - database
     volumes:
       - ./backend:/app
+      - /app/target/
     restart: always
 
   database:
