@@ -10,7 +10,7 @@ RUN mvn dependency:go-offline
 RUN mvn clean package
 
 # Etapa de execução
-FROM openjdk:17-jdk-alpine
+FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
