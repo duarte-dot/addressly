@@ -12,16 +12,14 @@ import java.util.Map;
 @RestControllerAdvice
 public class ExceptionHandler {
   @org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<Map<String, Map<String, String>>> handleValidationExceptions(
+  public ResponseEntity<Map<String, String>> handleValidationExceptions(
       MethodArgumentNotValidException ex) {
-    Map<String, Map<String, String>> errorResponse = new HashMap<>();
-    Map<String, String> errors = new HashMap<>();
+    Map<String, String> errorResponse = new HashMap<>();
 
     for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-      errors.put(error.getField(), error.getDefaultMessage());
+      errorResponse.put("erro", error.getDefaultMessage());
     }
 
-    errorResponse.put("erro", errors);
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
   }
 

@@ -1,5 +1,6 @@
 package com.duartedot.backend.controllers;
 
+import com.duartedot.backend.dto.UserPatchDTO;
 import com.duartedot.backend.services.UserService;
 import com.duartedot.backend.dto.UserRequestDTO;
 import com.duartedot.backend.dto.UserResponseDTO;
@@ -31,6 +32,13 @@ public class UserController {
   public ResponseEntity<Void> update(
       @PathVariable Long id, @Valid @RequestBody UserRequestDTO user) {
     userService.update(id, user);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PatchMapping("/{id}")
+  public ResponseEntity<Void> patch(
+      @PathVariable Long id, @Valid @RequestBody UserPatchDTO userPatch) {
+    userService.patch(id, userPatch);
     return ResponseEntity.noContent().build();
   }
 
