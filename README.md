@@ -37,3 +37,10 @@ http://localhost:8080
 ```bash
 docker compose down
 ```
+
+Prints do projeto:
+![Captura de Tela 2024-12-02 às 19 34 07](https://github.com/user-attachments/assets/8348b899-c2f9-4113-9feb-0c76fc5100d2)
+![Captura de Tela 2024-12-02 às 19 34 19](https://github.com/user-attachments/assets/c3fc5b8e-db7c-4f3d-9603-73cc26446ea0)
+![Captura de Tela 2024-12-02 às 19 35 06](https://github.com/user-attachments/assets/4caec80e-7db6-4ceb-ac8b-816deabb334a)
+![Captura de Tela 2024-12-02 às 19 35 20](https://github.com/user-attachments/assets/d30c4938-3b07-4e2a-ba13-fa0d0e02db8b)
+![Captura de Tela 2024-12-02 às 19 35 51](https://github.com/user-attachments/assets/604782dc-391e-4b1f-8d68-26435243434c)
