@@ -9,10 +9,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
+import { formatCPF, normalizeCPF } from "@/helpers/formatCpf";
 
 const formSchema = z.object({
   nome: z.string().min(3, { message: "Nome deve ter no mínimo 3 caracteres" }),
-  cpf: z.string().length(11, { message: "CPF deve ter 11 números" }),
+  cpf: z.string().length(14, { message: "CPF deve ter 11 números" }),
   cep: z.string().length(8, { message: "CEP deve ter 8 números" }),
   logradouro: z
     .string()
@@ -54,7 +55,12 @@ export const AddressFormModal: React.FC<AddressFormModalProps> = ({
   const { data: address, isFetching } = useFetchAddress(form.watch("cep"));
 
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
-    mutate(data);
+    const normalizedData = {
+      ...data,
+      cpf: normalizeCPF(data.cpf),
+    };
+
+    mutate(normalizedData);
   };
 
   useEffect(() => {
@@ -119,6 +125,14 @@ export const AddressFormModal: React.FC<AddressFormModalProps> = ({
                         {...field}
                         placeholder={getPlaceholder(field.name)}
                         className="bg-gray-800 text-white placeholder-gray-500 border border-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none rounded- px-4 py-2"
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          if (field.name === "cpf") {
+                            field.onChange(formatCPF(value));
+                          } else {
+                            field.onChange(value);
+                          }
+                        }}
                       />
                     </FormControl>
                     <FormMessage className="text-[0.5rem] text-start !mt-0 text-red-400" />

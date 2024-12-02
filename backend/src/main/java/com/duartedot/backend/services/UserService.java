@@ -15,7 +15,8 @@ import java.util.List;
 
 @Service
 public class UserService {
-  @Autowired private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
   public List<UserResponseDTO> getAll() {
     return userRepository.findAll().stream().map(UserResponseDTO::new).toList();
@@ -43,6 +44,13 @@ public class UserService {
   public void patch(Long id, UserPatchDTO userPatch) {
     User existingUser =
         userRepository.findById(id).orElseThrow(() -> new UserNotFound("Usuário não encontrado."));
+
+    if (userPatch.cpf() != null && !existingUser.getCpf().equals(userPatch.cpf())) {
+      boolean cpfAlreadyExists = userRepository.existsByCpf(userPatch.cpf());
+      if (cpfAlreadyExists) {
+        throw new AlreadyRegisteredCpf("O CPF informado já está cadastrado.");
+      }
+    }
 
     updateFieldIfNotNull(existingUser::setCpf, userPatch.cpf());
     updateFieldIfNotNull(existingUser::setNome, userPatch.nome());

@@ -4,6 +4,7 @@ import { usePatchUser } from "@/hooks/usePatchUser";
 import { useDeleteUser } from "@/hooks/useDeleteUser";
 import toast from "react-hot-toast";
 import type { AxiosError } from "axios";
+import { formatCPF, normalizeCPF } from "@/helpers/formatCpf";
 
 interface UserDetailsProps {
   user: {
@@ -64,12 +65,20 @@ export const UserDetails: React.FC<UserDetailsProps> = ({ user, onClose }) => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditedUser({ ...editedUser, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    const formattedValue = name === "cpf" ? formatCPF(value) : value;
+
+    setEditedUser({ ...editedUser, [name]: formattedValue });
   };
 
   const handleSave = async () => {
     try {
-      await updateUser(editedUser);
+      const cleanUser = {
+        ...editedUser,
+        cpf: normalizeCPF(editedUser.cpf),
+      };
+      await updateUser(cleanUser);
       setIsEditing(null);
       toast.success("Usuário atualizado com sucesso!");
     } catch (err: unknown) {
@@ -122,7 +131,7 @@ export const UserDetails: React.FC<UserDetailsProps> = ({ user, onClose }) => {
             </h2>
             <EditableField
               field="cpf"
-              value={editedUser.cpf}
+              value={formatCPF(editedUser.cpf)}
               isEditing={isEditing === "cpf"}
               onEdit={() => handleEdit("cpf")}
               onChange={handleChange}
