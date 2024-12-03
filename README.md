@@ -33,6 +33,10 @@ http://localhost:5173 (abra este em seu navegador :)
 - O Backend estará disponível em:
 http://localhost:8080
 
+### Observação:
+- Pode ser que nas primeiras vezes o backend demore pra se conectar ao MySQL dependendo do PC. Coisa de 1-2 minutos no máximo.
+
+
 ### Comando pra parar o Docker
 ```bash
 docker compose down
